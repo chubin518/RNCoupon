@@ -1,32 +1,35 @@
 import React, { PureComponent } from 'react';
 import {
-    Platform,
     StyleSheet,
     Text,
     View,
     FlatList,
     TouchableOpacity
 } from 'react-native';
+import PropTypes from 'prop-types'
 
 export default class CategoryBar extends PureComponent {
     constructor(props) {
         super(props)
-        this.state = {
-            selectCat: 1,
-            catList: this.props.cats
-        }
+    }
+
+    static propTypes = {
+        onChange: PropTypes.func.isRequired
     }
 
     itemClick(item) {
-        this.setState({
-            selectCat: item.ID
+        this.catItem && this.catItem.setNativeProps({
+            borderBottomWidth: 2,
+            borderBottomColor: '#FF0000',
         });
+        this.props.onChange && this.props.onChange(item.ID);
     }
 
     renderItem(data) {
         var item = data.item;
         return (<TouchableOpacity
-            style={[styles.item, this.state.selectCat == item.ID ? styles.selected : null]}
+            ref={(ref) => this.catItem = ref}
+            style={[styles.item, this.props.data && this.props.data.length >= 5 ? null : { flex: 1 }]}
             activeOpacity={1}
             onPress={this.itemClick.bind(this, item)}>
             <Text>
@@ -46,7 +49,7 @@ export default class CategoryBar extends PureComponent {
                 <FlatList
                     style={styles.body}
                     horizontal={true}
-                    data={this.state.catList}
+                    data={this.props.data}
                     renderItem={this.renderItem.bind(this)}
                     refreshing={true}
                     keyExtractor={this.keyExtra}

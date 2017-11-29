@@ -1,126 +1,85 @@
 import React, { PureComponent } from 'react';
 
 import {
-    Platform,
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
-    Image
 } from 'react-native';
 
 import {
-    SearchBar,
-    SubjectBar,
+    HttpUtils
+} from "../utils";
+
+import {
+    RefreshSectionList,
+    SectionListItem,
     TopBar,
-    ProductList,
-    CategoryBar
+    SubjectBar,
+    CategoryBar,
+    SearchBar
 } from "../components";
 
 import Swiper from 'react-native-swiper';
+import Loading from 'react-native-loading-w';
 
-
-export default class MainPage extends PureComponent {
+export default class CouponList extends PureComponent {
+    flag = null;
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-            SwiperList: [{
-                Title: '测试',
-                Icon: 'http://pic2.ooopic.com/10/94/82/07b1OOOPICc6.jpg',
-                Url: 'https://uland.taobao.com/coupon/edetail?activityId=a4d3e3bb798d434caf6826dd9489bca3&pid=mm_124544751_33334167_118612702&itemId=39272696835'
-            }],
-            Cats: [
-                {
-                    "ID": 1,
-                    "Name": "精选",
-                    "Icon": ""
-                },
-                {
-                    "ID": 2,
-                    "Name": "女人精选",
-                    "Icon": ""
-                },
-                {
-                    "ID": 8,
-                    "Name": "美妆精选",
-                    "Icon": ""
-                },
-                {
-                    "ID": 4,
-                    "Name": "男人",
-                    "Icon": ""
-                },
-                {
-                    "ID": 12,
-                    "Name": "内衣",
-                    "Icon": ""
-                },
-                {
-                    "ID": 13,
-                    "Name": "鞋包",
-                    "Icon": ""
-                },
-                {
-                    "ID": 3,
-                    "Name": "母婴",
-                    "Icon": ""
-                },
-                {
-                    "ID": 6,
-                    "Name": "家居",
-                    "Icon": ""
-                },
-                {
-                    "ID": 10,
-                    "Name": "配饰",
-                    "Icon": ""
-                },
-                {
-                    "ID": 7,
-                    "Name": "美食",
-                    "Icon": ""
-                },
-                {
-                    "ID": 14,
-                    "Name": "厨卫",
-                    "Icon": ""
-                },
-                {
-                    "ID": 5,
-                    "Name": "运动",
-                    "Icon": ""
-                },
-                {
-                    "ID": 9,
-                    "Name": "数码",
-                    "Icon": ""
-                },
-                {
-                    "ID": 11,
-                    "Name": "其它",
-                    "Icon": ""
-                }]
-        }
+            banners: [],
+            categories: [],
+            subjects: [],
+            currentCat: 1,
+            isReload: false
+        };
+        this.flag = 1;
+    }
+    componentDidMount() {
+        this.getLoading().show();
+        HttpUtils.get('search/Config').then(response => {
+            this.flag && this.setState({
+                banners: response.Banners || [],
+                categories: response.Cats || [],
+                subjects: response.Favorites || []
+            });
+            this.flag && this.getLoading().dismiss();
+        }).catch(error => {
+            this.flag && this.getLoading().dismiss();
+        });
+    }
+    componentWillUnmount() {
+        this.flag = null;
     }
 
-    renderHeader() {
-        const { navigate } = this.props.navigation;
-        var swiperItems = this.state.SwiperList.map(function (item, index) {
-            return (<TouchableOpacity
-                activeOpacity={1}
-                key={index}
-                style={styles.swiperItem}
-                onPress={() => {
-                    navigate('html', {
-                        title: item.Title,
-                        url: item.Url
-                    })
-                }}>
-                <Image
-                    style={styles.swiperImage}
-                    source={{ uri: item.Icon }} />
-            </TouchableOpacity>);
+    getLoading() {
+        return this.refs['loading'];
+    }
+
+    /**
+     * 网络上加载数据
+     * @param page
+     * @returns {Promise}
+     */
+    loadData(page) {
+        return HttpUtils.get('search/Cats', {
+            cat: this.state.currentCat,
+            pageno: page
         });
+    }
+    onCatChange(cat) {
+        this.setState({
+            currentCat: cat,
+            isReload: true
+        });
+    }
+    onSubmit(key) {
+        const { navigate } = this.props.navigation;
+        navigate.push('search', {
+            keyworld: key,
+        });
+    }
+    renderHeader() {
         return (
             <View>
                 <View
@@ -131,30 +90,57 @@ export default class MainPage extends PureComponent {
                         index={0}
                         autoplay={true}
                         horizontal={true}>
-                        {swiperItems}
+                        {
+                            this.state.banners && this.state.banners.map((item, index) => this.renderBanner(item, index))
+                        }
                     </Swiper>
                 </View>
-                <SubjectBar navigation={this.props.navigation} />
+                <SubjectBar
+                    data={this.state.subjects}
+                    navigation={this.props.navigation} />
                 <TopBar navigation={this.props.navigation} />
             </View>
         );
     }
-
     renderSection() {
-        return (
-            <View style={{ backgroundColor: '#fff' }}>
-                <CategoryBar cats={this.state.Cats} />
-            </View>
-        );
+        return (<View style={{ backgroundColor: '#fff' }}>
+            <CategoryBar
+                data={this.state.categories}
+                onChange={this.onCatChange} />
+        </View>);
     }
-
+    renderBanner(item, index) {
+        const { navigate } = this.props.navigation;
+        return (<TouchableOpacity
+            activeOpacity={1}
+            key={index}
+            style={styles.swiperItem}
+            onPress={() => {
+                navigate('html', {
+                    title: item.Title,
+                    url: item.Url
+                })
+            }}>
+            <Image
+                style={styles.swiperImage}
+                source={{ uri: item.Icon }} />
+        </TouchableOpacity>);
+    }
     render() {
         return (
             <View style={styles.container}>
-                <SearchBar />
-                <ProductList
+                <SearchBar onSubmit={(key) => this.onSubmit(key)} />
+                <RefreshSectionList
+                    isReload={this.state.isReload}
+                    fetchRequest={(page) => this.loadData(page)}
                     ListHeaderComponent={this.renderHeader.bind(this)}
-                    renderSectionHeader={this.renderSection.bind(this)} />
+                    renderSectionHeader={this.renderSection.bind(this)}
+                    stickySectionHeadersEnabled={true}
+                    renderItem={(item) => <SectionListItem
+                        product={item.item}
+                        navigation={this.props.navigation} />}
+                />
+                <Loading ref={'loading'} text={'Loading...'} />
             </View>
         );
     }

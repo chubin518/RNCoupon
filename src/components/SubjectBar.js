@@ -13,28 +13,7 @@ export default class SubjectBar extends PureComponent {
         super(props)
     }
     static defaultProps = {
-        subjectList: [
-            {
-                "ID": 1,
-                "Name": "超值9块9",
-                "Icon": "https://www.51hui.xin/images/9k9.jpg"
-            },
-            {
-                "ID": 2,
-                "Name": "20元封顶",
-                "Icon": "https://www.51hui.xin/images/20yuan.jpg"
-            },
-            {
-                "ID": 5,
-                "Name": "聚划算",
-                "Icon": "https://www.51hui.xin/images/muying.jpg"
-            },
-            {
-                "ID": 3,
-                "Name": "淘抢购",
-                "Icon": "https://www.51hui.xin/images/tejia.jpg"
-            }
-        ]
+        data: []
     }
     onClick(item) {
         const { navigate } = this.props.navigation;
@@ -49,9 +28,7 @@ export default class SubjectBar extends PureComponent {
             activeOpacity={1}
             key={index}
             style={styles.subjectItem}
-            onPress={() => {
-                this.onClick(item);
-            }}>
+            onPress={() => this.onClick(item)}>
             <Image style={styles.itemImage} source={{ uri: item.Icon }} />
             <Text style={styles.itemTitle}>
                 {item.Name}
@@ -64,7 +41,7 @@ export default class SubjectBar extends PureComponent {
             <View style={styles.container}>
                 <View style={styles.topContainer}>
                     {
-                        this.props.subjectList.map((item, index) => this.renderSubject(item, index))
+                        this.props.data.map((item, index) => this.renderSubject(item, index))
                     }
                 </View>
                 <View style={styles.bottomContainer}>
@@ -88,7 +65,7 @@ export default class SubjectBar extends PureComponent {
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={this.onClick.bind(this, { ID: 3, Name: '销量爆款' })}
+                            onPress={this.onClick.bind(this, { ID: 3, Name: '好券直播' })}
                             activeOpacity={1}
                             style={styles.zhiBo}>
                             <Image style={styles.itemImage} />

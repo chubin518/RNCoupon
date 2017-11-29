@@ -1,6 +1,8 @@
 import system from './system';
-import httpUtils from './httpUtils'
+import HttpUtils from './HttpUtils'
+import RefreshState from './RefreshState'
 export {
     system,
-    httpUtils
+    HttpUtils,
+    RefreshState
 };

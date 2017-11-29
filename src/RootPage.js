@@ -1,11 +1,15 @@
 
 import { StackNavigator } from "react-navigation";
-
+import React from 'react';
+import {
+    View
+} from 'react-native';
 import {
     MainPage,
-    SubjectList,
-    ProductDetail,
-    HtmlView
+    DetailPage,
+    SearchPage,
+    SubjectPage,
+    WebPage
 } from "./page";
 
 const RootNavigator = StackNavigator({
@@ -15,8 +19,17 @@ const RootNavigator = StackNavigator({
             header: null
         }
     },
+    search: {
+        screen: SearchPage,
+        navigationOptions: ({ navigation }) => {
+            const { state } = navigation;
+            return {
+                title: state.params.title
+            };
+        }
+    },
     subject: {
-        screen: SubjectList,
+        screen: SubjectPage,
         navigationOptions: ({ navigation }) => {
             const { state } = navigation;
             return {
@@ -25,10 +38,16 @@ const RootNavigator = StackNavigator({
         }
     },
     detail: {
-        screen: ProductDetail
+        screen: DetailPage,
+        navigationOptions: ({ navigation }) => {
+            const { state } = navigation;
+            return {
+                title: state.params.title
+            };
+        }
     },
     html: {
-        screen: HtmlView,
+        screen: WebPage,
         navigationOptions: ({ navigation }) => {
             const { state } = navigation;
             return {
@@ -46,14 +65,15 @@ const RootNavigator = StackNavigator({
                 borderBottomWidth: 0,
                 backgroundColor: '#fff',
                 elevation: 0,
-                shadowOpacity: 0
+                shadowOpacity: 0,
             },
             headerTitleStyle: {
-                alignSelf: 'center'
+                alignSelf: 'center',
             },
             headerBackTitle: null,
             headerTintColor: '#333333',
             showIcon: true,
+            headerRight:<View/>
         },
     });
 

@@ -13,7 +13,6 @@ import {
 
 import { system } from '../utils';
 
-
 export default class SearchBar extends PureComponent {
   constructor(props) {
     super(props)
@@ -30,7 +29,7 @@ export default class SearchBar extends PureComponent {
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state.inputText);
     }
-    alert(this.state.inputText);
+
     Keyboard.dismiss();//回收展开的键盘
   }
 
@@ -40,11 +39,11 @@ export default class SearchBar extends PureComponent {
     });
   }
   cancelInput() {
-    console.log(1)
     this.setState({
       inputText: ''
     });
   }
+
   render() {
     var eleCancel = null;
     if (this.state.inputText.length >= 1) {
@@ -54,8 +53,8 @@ export default class SearchBar extends PureComponent {
     }
     return (
       <View style={[styles.container, this.props.style]}>
-        <Image style={styles.logo} 
-        source={require('../images/logo.png')}/>
+        <Image style={styles.logo}
+          source={require('../images/logo.png')} />
         <View style={styles.searchBox}>
           <Image
             source={require('../images/search_icon.png')}

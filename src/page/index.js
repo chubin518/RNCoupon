@@ -1,11 +1,13 @@
 import MainPage from "./MainPage";
-import ProductDetail from "./ProductDetail";
-import SubjectList from "./SubjectList";
-import HtmlView from "./HtmlView";
+import DetailPage from "./DetailPage";
+import SearchPage from "./SearchPage";
+import SubjectPage from "./SubjectPage";
+import WebPage from "./WebPage";
 
 export {
     MainPage,
-    SubjectList,
-    ProductDetail,
-    HtmlView
+    DetailPage,
+    SearchPage,
+    SubjectPage,
+    WebPage
 }
