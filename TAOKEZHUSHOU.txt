@@ -1,0 +1,49 @@
+接口地址： http://api.taokezhushou.com/api/v1/search
+
+app_key	String	是	您在淘客助手申请的app_key
+cate_id	int	否	类目id
+today	int	否	今日发布 （1是 0否）
+is_tmall	int	否	是否天猫 （1是 0否）
+gold_seller	int	否	是否金牌卖家 （1是 0否）
+juhuasuan	int	否	是否聚划算 （1是 0否）
+taoqianggou	int	否	是否淘抢购 （1是 0否）
+jiyoujia	int	否	是否极有家 （1是 0否）
+haitao	int	否	是否海淘 （1是 0否）
+yunfeixian	int	否	是否有运费险 （1是 0否）
+commisstion_rate_start	int	否	佣金大于
+sale_num_start	int	否	销量大于
+dsr	float	否	dsr描述评分大于等于
+price_start	float	否	券后价大于等于
+price_end	float	否	券后价小于等于
+sort	string	否	最新排序（new）
+价格升序（price_asc）
+价格降序（price_desc）
+佣金降序（commission_rate_desc）
+2小时销量（two_hour_sale_num）
+全天销量（one_day_sale_num）
+总销量（sale_num）
+q	string	否	搜索关键字
+page	int	否	第几页（默认第1页，固定一页100条）
+
+
+ //商品分类 int 1女装 2男装 3内衣 4数码家电 5美食 6美妆个护 7母婴 8鞋包配饰 9家居家装 10文体车品 11其他
+
+ 
+     {
+          ID: 1,
+          Name: "人气"
+        },
+        {
+          ID: 5,
+          Name: "推荐"
+        },
+        {
+          ID: 3,
+          Name: "销量"
+        },
+        {
+          ID: 4,
+          Name: "到手价"
+        }
+
+

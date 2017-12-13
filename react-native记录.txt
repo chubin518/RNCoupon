@@ -1,0 +1,111 @@
+
+
+生成密钥
+keytool -genkey -v -keystore couponapp.keystore -alias couponapp -keyalg RSA -keysize 2048 -validity 10000
+
+
+使用箭头函数 避免每次渲染时都创建一个新的函数
+
+建议写法：
+class MyList extends React.PureComponent {
+
+  _keyExtractor = (item, index) => item.id;
+
+  _renderItem = ({item}) => (
+    <MyPureListItemComponent
+      ...
+    />
+  );
+
+  _renderHeader = ({item}) => (
+    <MyPureHeaderComponent
+      ...
+    />
+  );
+
+  render() {
+    return (
+      <FlatList
+        data={this.props.data}
+     initialNumToRender={5}
+                    maxToRenderPerBatch={4}
+        keyExtractor={this._keyExtractor}
+        renderItem={this._renderItem}
+        ListHeaderComponent={this._renderHeader}
+      />
+    );
+  }
+}
+
+如果上述写法不工作时 参考此写法
+constructor(props) {
+  super(props);
+  this._renderHeader = this._renderHeader.bind(this);
+  this._renderItem = this._renderItem.bind(this);
+  this._keyExtractor = this._keyExtractor.bind(this);
+  ...
+}
+
+不建议写法：
+renderHeader = () => {
+        return (<View style={{flex: 1}} ><SearchBar placeholder="Suchen..."
+                                                    lightTheme
+                                                    round
+                                                    autoFocus={false}
+                                                    onChangeText={this.doSearch} />
+         </View >);
+    }
+return (
+            <View >
+                <List style={styles.list} >
+                    {console.group()}
+                    <FlatList
+                        extraData={this.state.searchResult.contacts}
+                        data={this.state.searchResult.contacts}
+                        keyExtractor={item => item.id}
+                        ListHeaderComponent={this.renderHeader}
+                        renderItem={({item}) => (
+                            <ListItem
+                                roundAvatar
+                                key={item.id}
+                                title={`${item.Name}, ${(this.state.latitude != null) ? '(' + radiusSearch(item.Geo.lat, item.Geo.long, this.state.latitude, this.state.longitude, 'K', 0) + ' km)' : ''}`}
+                                subtitle={`${item.Adresse} - ${item.PLZ} ${item.Ort}\n${item.Ansprechpartner.Name} `}
+                                subtitleNumberOfLines={2}
+                                onPress={() => {
+                                    navigator.geolocation.clearWatch(this.state.geoWatchId);
+                                    navigate('ContactDetail',
+                                        {
+                                            contact: item,
+                                        }
+                                    )
+                                }}
+                                //avatar='http://findicons.com/files/icons/2837/health/128/doctor_icon.png'
+                            />
+                        )}
+                    />
+                </List >
+                {console.groupEnd()}
+            </View >
+        );
+
+
+能写成stateless component时 就写成静态组件
+const ForecastRow = (props)=> {
+   return (
+     <View style={styles.row}>
+      <View style={styles.rightContainer}>
+      <Text style={styles.subtitle}></Text>
+        <Text style={styles.subtitle}>
+         {props.Text}
+  </Text>
+</View>
+</View>
+ )
+}
+
+const RightButton = ({ onPress }) => <Text onPress={onPress}>Right</Text>
+
+// Prop type warnings
+RightButton.propTypes = {
+  onPress: React.PropTypes.func.isRequired
+}
