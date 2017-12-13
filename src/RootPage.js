@@ -2,12 +2,22 @@ import { StackNavigator } from "react-navigation";
 import React from "react";
 import { View } from "react-native";
 import { SearchBar } from "../src/components";
-import { DetailPage, SearchPage, SubjectPage, WebPage, HomePage } from "./page";
+import {
+  DetailPage,
+  SearchPage,
+  SubjectPage,
+  WebPage,
+  HomePage,
+  WelcomePage
+} from "./page";
 
 const RootNavigator = StackNavigator(
   {
     home: {
       screen: HomePage
+    },
+    welcome: {
+      screen: WelcomePage
     },
     search: {
       screen: SearchPage
@@ -41,7 +51,7 @@ const RootNavigator = StackNavigator(
     }
   },
   {
-    initialRouteName: "home", //根导航控制页面，默认为第一个
+    initialRouteName: "welcome", //根导航控制页面，默认为第一个
     mode: "card",
     headerMode: "screen",
     navigationOptions: {
