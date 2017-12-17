@@ -26,6 +26,10 @@ export default class ClassifyPage extends PureComponent {
 
   _onSubmit = () => {
     Keyboard.dismiss();
+    let { navigate } = this.props.navigation;
+    navigate("result", {
+      keyworld: this.state.keyword
+    });
   };
 
   _clearInput = () => {
