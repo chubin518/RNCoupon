@@ -18,6 +18,7 @@ export default class ClassifyPage extends PureComponent {
       keyword: ""
     };
   }
+
   _onChangeText = txt => {
     this.setState({
       keyword: txt
@@ -25,11 +26,11 @@ export default class ClassifyPage extends PureComponent {
   };
 
   _onSubmit = () => {
-    Keyboard.dismiss();
     let { navigate } = this.props.navigation;
     navigate("result", {
       keyworld: this.state.keyword
     });
+    Keyboard.dismiss();
   };
 
   _clearInput = () => {

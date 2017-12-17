@@ -27,10 +27,10 @@ export default class SearchBar extends PureComponent {
   };
 
   searchClick = () => {
-    Keyboard.dismiss(); //回收展开的键盘
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state.inputText);
     }
+    Keyboard.dismiss(); //回收展开的键盘
   };
 
   onTextChange = txt => {

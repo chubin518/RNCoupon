@@ -50,6 +50,9 @@ const TabNav = TabNavigator(
       navigationOptions: {
         tabBarLabel: "销量爆款",
         title: "销量爆款",
+        initialRouteParams: {
+          id: 1
+        },
         headerLeft: <View />,
         tabBarIcon: ({ tintColor, focused }) => (
           <Image

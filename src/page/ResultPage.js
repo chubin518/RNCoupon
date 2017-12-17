@@ -70,15 +70,15 @@ export default class SearchPage extends PureComponent {
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({
-      keyworld: this.state.keyworld,
-      onSearch: key => {
-        this.setState({
-          isReload: true,
-          keyworld: key
-        });
-      }
-    });
+    // this.props.navigation.setParams({
+    //   keyworld: this.state.keyworld,
+    //   onSearch: key => {
+    //     this.setState({
+    //       isReload: true,
+    //       keyworld: key
+    //     });
+    //   }
+    // });
   }
 
   _RenderItem = item => (
