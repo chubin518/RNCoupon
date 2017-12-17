@@ -6,10 +6,18 @@ import {
   View,
   SectionList,
   RefreshControl,
-  FlatList
+  FlatList,
+  Image
 } from "react-native";
 import { RefreshState, HttpUtils } from "../utils";
-import { EmptyComponent, FooterComponent, SectionListItem } from "../stateless";
+import {
+  EmptyComponent,
+  FooterComponent,
+  SectionListItem,
+  BannerBar,
+  SelectionBar,
+  TopicBar
+} from "../stateless";
 import {
   CategoryBar,
   SwiperBar,
@@ -52,7 +60,7 @@ export default class HomePage extends PureComponent {
         <SearchBar
           showLogo={true}
           onSubmit={key => {
-            navigate("search", {
+            navigate("result", {
               keyworld: key
             });
           }}
@@ -121,10 +129,11 @@ export default class HomePage extends PureComponent {
           datasource={this.state.banners}
           navigation={this.props.navigation}
         />
-
-        <SubjectBar navigation={this.props.navigation} />
-
-        <SaleTop100 data={this.state.topList} navigation={this.props.navigation} />
+        <BannerBar navigation={this.props.navigation} />
+        <SelectionBar navigation={this.props.navigation} />
+        <View style={styles.header}>
+          <Image style={styles.lanmu} source={require("../images/zhibo.png")} />
+        </View>
       </View>
     );
   };
@@ -224,3 +233,17 @@ export default class HomePage extends PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "#f5f5f5",
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  lanmu: {
+    height: 22,
+    width: "100%",
+    resizeMode: "contain"
+  }
+});

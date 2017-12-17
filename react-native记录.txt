@@ -3,6 +3,9 @@
 生成密钥
 keytool -genkey -v -keystore couponapp.keystore -alias couponapp -keyalg RSA -keysize 2048 -validity 10000
 
+打包
+$ cd android && ./gradlew assembleRelease
+
 
 使用箭头函数 避免每次渲染时都创建一个新的函数
 

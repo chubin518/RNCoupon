@@ -2,24 +2,21 @@ import React, { PureComponent } from "react";
 
 import { Platform, StyleSheet, View, InteractionManager } from "react-native";
 import SplashScreen from "react-native-splash-screen";
+import RootNav from "./RootNav";
 
-export default class WelcomePage extends PureComponent {
+export default class Entry extends PureComponent {
   constructor(props) {
     super(props);
   }
   componentDidMount() {
-    this.timer = setTimeout(() => {
-      InteractionManager.runAfterInteractions(() => {
-        SplashScreen.hide();
-        const { navigate } = this.props.navigation;
-        navigate("home");
-      });
-    }, 500);
+    InteractionManager.runAfterInteractions(() => {
+      SplashScreen.hide();
+    });
   }
   componentWillUnmount() {
     this.timer && clearTimeout(this.timer);
   }
   render() {
-    return <View style={{ flex: 1 }} />;
+    return <RootNav style={{ flex: 1 }} />;
   }
 }

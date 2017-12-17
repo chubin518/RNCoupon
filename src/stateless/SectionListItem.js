@@ -36,7 +36,7 @@ const SectionListItem = ({ product, navigation }) => {
         </View>
         <View style={styles.sale}>
           <Image style={styles.saleImage} />
-          <Text style={styles.saleInfo}>月销 {product.SPYXL}件</Text>
+          <Text style={styles.saleInfo}>已售 {product.SPYXL}件</Text>
         </View>
         <View style={styles.price}>
           <View

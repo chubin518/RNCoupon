@@ -1,26 +1,36 @@
 import { StackNavigator } from "react-navigation";
 import React from "react";
-import { View } from "react-native";
-import { SearchBar } from "../src/components";
+import { View, Alert } from "react-native";
 import {
   DetailPage,
-  SearchPage,
+  ResultPage,
   SubjectPage,
   WebPage,
   HomePage,
   WelcomePage
 } from "./page";
 
+import TabNav from "./TabNav";
+import ErrorUtils from "ErrorUtils";
+
+ErrorUtils.setGlobalHandler(e => {
+  console.log(e);
+  Alert.alert("异常", JSON.stringify(e));
+});
+
 const RootNavigator = StackNavigator(
   {
-    home: {
-      screen: HomePage
+    tab: {
+      screen: TabNav
     },
-    welcome: {
-      screen: WelcomePage
-    },
-    search: {
-      screen: SearchPage
+    // welcome: {
+    //   screen: WelcomePage,
+    //   navigationOptions: {
+    //     header: null
+    //   }
+    // },
+    result: {
+      screen: ResultPage
     },
     subject: {
       screen: SubjectPage,
@@ -51,7 +61,7 @@ const RootNavigator = StackNavigator(
     }
   },
   {
-    initialRouteName: "welcome", //根导航控制页面，默认为第一个
+    initialRouteName: "tab", //根导航控制页面，默认为第一个
     mode: "card",
     headerMode: "screen",
     navigationOptions: {

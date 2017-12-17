@@ -1,43 +1,47 @@
 package com.rnfirst;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
 import com.alibaba.baichuan.android.trade.model.AlibcTaokeParams;
 import com.facebook.react.ReactApplication;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-        @Override
-        public boolean getUseDeveloperSupport() {
-            return BuildConfig.DEBUG;
-        }
+    private final ReactNativeHost mReactNativeHost;
 
-        @Override
-        protected List<ReactPackage> getPackages() {
-            return Arrays.<ReactPackage>asList(
-                    new MainReactPackage(),
-            new SplashScreenReactPackage(),
-                    new RNAlibcSdkPackage()
-            );
-        }
+    {
+        mReactNativeHost = new ReactNativeHost(this) {
+            @Override
+            public boolean getUseDeveloperSupport() {
+                return BuildConfig.DEBUG;
+            }
 
-        @Override
-        protected String getJSMainModuleName() {
-            return "index";
-        }
-    };
+            @Override
+            protected List<ReactPackage> getPackages() {
+                return Arrays.<ReactPackage>asList(
+                        new MainReactPackage(),
+                        new SplashScreenReactPackage(),
+                        new RNAlibcSdkPackage()
+                );
+            }
+
+            @Override
+            protected String getJSMainModuleName() {
+                return "index";
+            }
+        };
+    }
 
     @Override
     public ReactNativeHost getReactNativeHost() {

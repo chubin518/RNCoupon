@@ -13,9 +13,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
-/**
- * Created by lxw3311 on 2017/12/7.
- */
 
 public class RNAlibcSdkModule extends ReactContextBaseJavaModule {
     public RNAlibcSdkModule(ReactApplicationContext reactContext) {
@@ -29,7 +26,8 @@ public class RNAlibcSdkModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void Show(String url) {
-        AlibcTrade.show(getCurrentActivity(), new AlibcPage(url),
+        AlibcTrade.show(getCurrentActivity(),
+                new AlibcPage(url),
                 new AlibcShowParams(OpenType.Native, false),
                 new AlibcTaokeParams(getReactApplicationContext().getString(R.string.pid), "", ""),
                 null,
@@ -37,7 +35,7 @@ public class RNAlibcSdkModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public void onFailure(int i, String s) {
-//打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
+                        //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
                     }
 
                     @Override

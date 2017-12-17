@@ -1,0 +1,83 @@
+ "data": [
+                    {
+                        "id": "58502",
+                        "goods_name": "诺诺童装 秋冬保暖内衣套装 儿童纯棉中厚款贴身舒适打底家居套装", /*名称*/
+                        "goods_id": "538931098321", /*淘宝id*/
+                        "cate_id": "1",/*分类id*/
+                        "cate_name": "居家",/*分类名称*/
+                        "goods_url": "https://item.taobao.com/*******098321",/*商品URL*/
+                        "pic": "http://img.alicdn******1zeXXXtGpXa_!!325291392.jpg_250x250q90.jpg",/*商品图片*/
+                        "price": "69.00",/*在线售价*/
+                        "price_after_coupons": "39.00", /*券后售价*/
+                        "price_coupons": "39.00",/*券的价格*/
+                        "sales": "238",/*销售量*/
+                        "rate": "39.90",/*佣金比例*/
+                        "commission_type": "3",/*佣金类型*/
+                        "commission_type_name": "鹊桥",/*佣金类型名称*/
+                        "quan_link": "http://shop.m.taobao.com/sh*********ea3f4d368707efc833384b77",/*领券链接*/
+                        "quan_shengyu": "998",/*领券的剩余*/
+                        "quan_zhong": "1000",/*领券的总数*/
+                        "quan_ling": "2",/*领了多少*/
+                        "quan_expired_time": "2016-12-11 00:00:00",/*领券结束时间*/
+                        "quan_note": "单笔满69元可用，每人限领1 张",/*领券的备注*/
+                        "quan_guid_content": "儿童纯棉中厚款，贴身舒适，打底家居套装，必备保暖套装！"/*领的导购文案*/
+                        "quan_qq_img": "http://images.***.*******.jpg"/*QQ群发时候用的图片*/
+                        "src": "1"/*是否天猫，0否1是*/
+                        "jhs": "1"/*是否聚划算商品，0否1是*/
+                        "tqg": "1"/*是否淘抢购，0否1是*/
+                        "gold": "1"/*是否金牌卖家，0否1是*/
+                        "freight": "1"/*是否赠运费险，0否1是*/
+                        "abroad": "1"/*是否海淘商品，0否1是*/
+                        "flagship": "1"/*是否旗舰店，0否1是*/
+                    }
+
+
+
+{
+"id": "1",
+"classname": "女装"
+},
+{
+"id": "2",
+"classname": "男装"
+},
+{
+"id": "3",
+"classname": "内衣"
+},
+{
+"id": "4",
+"classname": "母婴"
+},
+{
+"id": "5",
+"classname": "美妆"
+},
+{
+"id": "6",
+"classname": "居家"
+},
+{
+"id": "7",
+"classname": "鞋包配饰"
+},
+{
+"id": "8",
+"classname": "美食"
+},
+{
+"id": "9",
+"classname": "文体车品"
+},
+{
+"id": "10",
+"classname": "数码家电"
+},
+{
+"id": "11",
+"classname": "运动户外"
+},
+{
+"id": "12",
+"classname": "其他"
+}
