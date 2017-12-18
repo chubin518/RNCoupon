@@ -1,7 +1,25 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import { View, StyleSheet, Image } from "react-native";
-import { HomePage, ClassifyPage, SearchPage } from "./page";
+import { HomePage, ClassifyPage, SearchPage, TopicPage } from "./page";
 import { TabNavigator, TabBarBottom } from "react-navigation";
+
+class SaleHot extends PureComponent {
+  constructor(props){
+    super(props);
+  }
+  render() {
+    return <TopicPage sid={2} navigation={this.props.navigation}/>;
+  }
+}
+
+class SaleToday extends PureComponent {
+  constructor(props){
+    super(props);
+  }
+  render() {
+    return <TopicPage sid={3} navigation={this.props.navigation} />;
+  }
+}
 
 const TabNav = TabNavigator(
   {
@@ -46,7 +64,7 @@ const TabNav = TabNavigator(
       }
     },
     hot: {
-      screen: SearchPage,
+      screen: SaleHot,
       navigationOptions: {
         tabBarLabel: "销量爆款",
         title: "销量爆款",
@@ -63,7 +81,7 @@ const TabNav = TabNavigator(
       }
     },
     today: {
-      screen: SearchPage,
+      screen: SaleToday,
       navigationOptions: {
         tabBarLabel: "今日必拍",
         title: "今日必拍",

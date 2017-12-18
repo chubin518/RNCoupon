@@ -5,6 +5,9 @@ import WebPage from "./WebPage";
 import HomePage from "./HomePage";
 import ClassifyPage from "./ClassifyPage";
 import SearchPage from "./SearchPage";
+import TopicPage from "./TopicPage";
+import ChannelPage from "./ChannelPage";
+
 export {
   HomePage,
   DetailPage,
@@ -12,5 +15,7 @@ export {
   SubjectPage,
   WebPage,
   ClassifyPage,
-  SearchPage
+  SearchPage,
+  TopicPage,
+  ChannelPage
 };

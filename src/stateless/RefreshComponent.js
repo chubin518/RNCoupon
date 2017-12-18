@@ -42,7 +42,7 @@ const FooterComponent = props => {
     case RefreshState.NoMoreData:
       eleFooter = (
         <View style={styles.footerContainer}>
-          <Text styles={styles.footerText}>{props.noMoreText}</Text>
+          <Text style={styles.footerText}>{props.noMoreText}</Text>
         </View>
       );
       break;

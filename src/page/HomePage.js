@@ -9,7 +9,7 @@ import {
   FlatList,
   Image
 } from "react-native";
-import { RefreshState, HttpUtils } from "../utils";
+import { RefreshState, HttpUtils, system } from "../utils";
 import {
   EmptyComponent,
   FooterComponent,
@@ -18,14 +18,7 @@ import {
   SelectionBar,
   TopicBar
 } from "../stateless";
-import {
-  CategoryBar,
-  SwiperBar,
-  SubjectBar,
-  SaleTop100,
-  SearchBar,
-  Loading
-} from "../components";
+import { ClassifyBar, SwiperBar, SearchBar, Loading } from "../components";
 
 export default class HomePage extends PureComponent {
   currentCat = 1;
@@ -94,8 +87,6 @@ export default class HomePage extends PureComponent {
       .then(result => {
         if (result) {
           this.setState({
-            banners: result.Banners,
-            topList: result.Top100,
             refreshState: RefreshState.Idle
           });
           this.setSectionData(result.Products);
@@ -196,7 +187,7 @@ export default class HomePage extends PureComponent {
     offset: 150 * index,
     index
   });
-  _renderSection = () => <CategoryBar onChange={this._onChange} />;
+  _renderSection = () => <ClassifyBar onChange={this._onChange} />;
   render() {
     const isRefreshing = this.state.refreshState === RefreshState.Refreshing;
     return (

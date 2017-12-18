@@ -5,6 +5,7 @@ import BannerBar from "./BannerBar";
 import SelectionBar from "./SelectionBar";
 import TopicBar from "./TopicBar";
 import { ProductName, ProductShop, ProductImages } from "./ProductDetail";
+import ScrollToTop from "./ScrollToTop";
 export {
   EmptyComponent,
   FooterComponent,
@@ -15,5 +16,6 @@ export {
   ProductImages,
   BannerBar,
   SelectionBar,
-  TopicBar
+  TopicBar,
+  ScrollToTop
 };

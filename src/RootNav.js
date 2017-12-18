@@ -7,7 +7,8 @@ import {
   SubjectPage,
   WebPage,
   HomePage,
-  WelcomePage
+  TopicPage,
+  ChannelPage
 } from "./page";
 
 import TabNav from "./TabNav";
@@ -23,12 +24,24 @@ const RootNavigator = StackNavigator(
     tab: {
       screen: TabNav
     },
-    // welcome: {
-    //   screen: WelcomePage,
-    //   navigationOptions: {
-    //     header: null
-    //   }
-    // },
+    channel:{
+      screen: ChannelPage,
+      navigationOptions: ({ navigation }) => {
+        const { state } = navigation;
+        return {
+          title: state.params.title
+        };
+      }
+    },
+    topic: {
+      screen: TopicPage,
+      navigationOptions: ({ navigation }) => {
+        const { state } = navigation;
+        return {
+          title: state.params.title
+        };
+      }
+    },
     result: {
       screen: ResultPage
     },

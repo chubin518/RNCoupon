@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 
 import {
   SearchBar,
-  CategoryBar,
+  ClassifyBar,
   RefreshFlatList,
   Loading
 } from "../components";
@@ -97,12 +97,13 @@ export default class SearchPage extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <CategoryBar data={this.state.categories} onChange={this._onChange} />
+        <ClassifyBar data={this.state.categories} onChange={this._onChange} />
         <RefreshFlatList
           isReload={this.state.isReload}
           numColumns={2}
           fetchRequest={page => this.loadData(page)}
           renderItem={this._RenderItem}
+          navigation={this.props.navigation}
         />
         <Loading ref={ref => (this.loading = ref)} text={"Loading..."} />
       </View>
