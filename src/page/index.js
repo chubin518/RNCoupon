@@ -7,6 +7,7 @@ import ClassifyPage from "./ClassifyPage";
 import SearchPage from "./SearchPage";
 import TopicPage from "./TopicPage";
 import ChannelPage from "./ChannelPage";
+import ClassifyListPage from "./ClassifyListPage";
 
 export {
   HomePage,
@@ -17,5 +18,6 @@ export {
   ClassifyPage,
   SearchPage,
   TopicPage,
-  ChannelPage
+  ChannelPage,
+  ClassifyListPage
 };

@@ -5,17 +5,21 @@ import {
   Text,
   View,
   RefreshControl,
+  Image,
   FlatList
 } from "react-native";
 
 import {
   EmptyComponent,
   FooterComponent,
-  FlatListItem,
+  SectionListItem,
+  BannerBar,
+  SelectionBar,
   ScrollToTop
 } from "../stateless";
+import { SwiperBar, SearchBar, Loading } from "../components";
 
-import { RefreshState, system } from "../utils";
+import { RefreshState, system, HttpUtils } from "../utils";
 import PropTypes from "prop-types";
 
 const itemHeight = system.width / 2 + 100;
@@ -27,33 +31,56 @@ export default class RefreshFlatList extends PureComponent {
     this.state = {
       isShow: false,
       refreshState: RefreshState.Idle,
-      datas: []
+      datas: [],
+      banners: []
     };
     this.flag = 1;
   }
 
-  static propTypes = {
-    fetchRequest: PropTypes.func.isRequired,
-    itemHeight: PropTypes.number
+  static navigationOptions = ({ navigation }) => {
+    const { navigate, state } = navigation;
+    return {
+      header: (
+        <SearchBar
+          showLogo={true}
+          onSubmit={key => {
+            navigate("result", {
+              keyworld: key
+            });
+          }}
+        />
+      )
+    };
   };
-
-  componentWillUnmount() {
-    this.flag = null;
+  
+  componentDidMount() {
+    this.initDatas();
   }
 
   initDatas() {
-    this.pageno = 1;
-    this._loadDatas();
+    this.setState({
+      refreshState: RefreshState.Refreshing
+    });
+    HttpUtils.get("config/index").then(result => {
+      this.setState({
+        refreshState: result ? RefreshState.Idle : RefreshState.NoData,
+        banners: result.Banners
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.flag = null;
   }
 
   /**
    * 加载数据
    */
   _loadDatas = () => {
-    const { fetchRequest } = this.props;
     this.flag &&
-      fetchRequest &&
-      fetchRequest(this.pageno).then(res => {
+      HttpUtils.get("Topic/all", {
+        pageno: this.pageNo
+      }).then(res => {
         if (res && res.Datas) {
           let refreshState = RefreshState.NoData;
           const datas = this.pageno === 1 ? [] : this.state.datas;
@@ -105,17 +132,34 @@ export default class RefreshFlatList extends PureComponent {
   };
 
   _renderItem = ({ item }) => (
-    <FlatListItem navigation={this.props.navigation} product={item} />
+    <SectionListItem navigation={this.props.navigation} product={item} />
   );
 
+  /**
+   * 头部模块
+   */
+  _renderHeader = () => {
+    return (
+      <View>
+        <SwiperBar
+          datasource={this.state.banners}
+          navigation={this.props.navigation}
+        />
+        <BannerBar navigation={this.props.navigation} />
+        <SelectionBar navigation={this.props.navigation} />
+        <View style={styles.header}>
+          <Image style={styles.lanmu} source={require("../images/zhibo.png")} />
+        </View>
+      </View>
+    );
+  };
   /**
    * getItemLayout是一个可选的优化，用于避免动态测量内容尺寸的开销，不过前提是你可以提前知道内容的高度。如果你的行高是固定的，getItemLayout用起来就既高效又简单
    */
   _itemLayout = (item, index) => {
-    const height = this.props.itemHeight ? this.props.itemHeight : itemHeight;
     return {
-      length: height,
-      offset: height * index,
+      length: itemHeight,
+      offset: itemHeight * index,
       index
     };
   };
@@ -136,10 +180,8 @@ export default class RefreshFlatList extends PureComponent {
     return (
       <View style={styles.container}>
         <FlatList
-          {...this.props}
           style={styles.listView}
           data={this.state.datas}
-          numColumns={2}
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           onEndReachedThreshold={0.1}
@@ -150,6 +192,7 @@ export default class RefreshFlatList extends PureComponent {
           onEndReached={this._onLoading}
           renderItem={this._renderItem}
           onScroll={this._onScroll}
+          ListHeaderComponent={this._renderHeader}
           refreshControl={
             <RefreshControl
               onRefresh={this._onRefreshing}
@@ -176,5 +219,16 @@ const styles = StyleSheet.create({
   },
   listView: {
     flex: system.height
+  },
+  header: {
+    backgroundColor: "#f5f5f5",
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  lanmu: {
+    height: 22,
+    width: "100%",
+    resizeMode: "contain"
   }
 });

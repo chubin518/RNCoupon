@@ -26,6 +26,7 @@ export default class ClassifyPage extends PureComponent {
   };
 
   _onSubmit = () => {
+    console.log(this.state.keyword);
     let { navigate } = this.props.navigation;
     navigate("result", {
       keyworld: this.state.keyword

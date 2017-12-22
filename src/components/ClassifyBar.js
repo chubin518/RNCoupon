@@ -4,98 +4,44 @@ import {
   Text,
   View,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from "react-native";
+import { system, Config } from "../utils";
 import PropTypes from "prop-types";
-import { system } from "../utils";
 
-export default class CategoryBar extends Component {
+export default class ClassifyBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectCat: 0
+      selected: this.props.selected
     };
   }
 
+  static propTypes = {
+    selected: PropTypes.number
+  };
+
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state.selectCat != nextState.selectCat;
+    return this.state.selected != nextState.selected;
   }
 
   static propTypes = {
     onChange: PropTypes.func.isRequired
   };
+
   static defaultProps = {
-    data: [{
-      "ID": 0,
-      "Name": "精选",
-      "Icon": null
-      },
-      {
-      "ID": 1,
-      "Name": "女装",
-      "Icon": null
-      },
-      {
-      "ID": 2,
-      "Name": "男装",
-      "Icon": null
-      },
-      {
-      "ID": 3,
-      "Name": "内衣",
-      "Icon": null
-      },
-      {
-      "ID": 4,
-      "Name": "数码家电",
-      "Icon": null
-      },
-      {
-      "ID": 5,
-      "Name": "美食",
-      "Icon": null
-      },
-      {
-      "ID": 6,
-      "Name": "美妆个护",
-      "Icon": null
-      },
-      {
-      "ID": 7,
-      "Name": "母婴",
-      "Icon": null
-      },
-      {
-      "ID": 8,
-      "Name": "鞋包配饰",
-      "Icon": null
-      },
-      {
-      "ID": 9,
-      "Name": "家居家装",
-      "Icon": null
-      },
-      {
-      "ID": 10,
-      "Name": "文体车品",
-      "Icon": null
-      },
-      {
-      "ID": 11,
-      "Name": "其他",
-      "Icon": null
-      }
-    ]
+    data: Config.Classyfy
   };
 
   _onChange = item => {
-    if (item.ID === this.state.selectCat) {
+    if (item.id === this.state.selected) {
       return;
     }
     this.setState({
-      selectCat: item.ID
+      selected: item.id
     });
-    this.props.onChange && this.props.onChange(item.ID);
+    this.props.onChange && this.props.onChange(item);
   };
 
   _renderItem = data => {
@@ -106,13 +52,13 @@ export default class CategoryBar extends Component {
         onPress={() => this._onChange(item)}
         style={[
           styles.item,
-          this.state.selectCat === item.ID ? styles.selected : null,
-          this.props.data && this.props.data.length >= 5
-            ? null
-            : { width: system.width / 4 - 5 }
+          this.state.selected === item.id ? styles.selectedItem : null
         ]}
       >
-        <Text>{item.Name}</Text>
+        <Image source={{ uri: item.icon }} style={styles.image} />
+        <Text style={this.state.selected === item.id ? styles.selected : null}>
+          {item.name}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -125,7 +71,7 @@ export default class CategoryBar extends Component {
           horizontal={true}
           data={this.props.data}
           renderItem={this._renderItem}
-          keyExtractor={item => item.ID}
+          keyExtractor={item => item.id}
           extraData={this.state}
           showsHorizontalScrollIndicator={false}
         />
@@ -134,23 +80,30 @@ export default class CategoryBar extends Component {
   }
 }
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    height: 40,
+    height: 70,
     borderBottomWidth: 1,
     borderBottomColor: "#eeeff1",
     backgroundColor: "#fff"
   },
   selected: {
+    color: "#FF0000"
+  },
+  selectedItem: {
     borderBottomWidth: 2,
     borderBottomColor: "#FF0000"
   },
   body: {
     flex: 1
   },
+  image: {
+    width: 35,
+    height: 35
+  },
   item: {
     width: 70,
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center"
   }
 });

@@ -4,48 +4,39 @@ import {
   StyleSheet,
   Text,
   View,
-  SectionList,
   RefreshControl,
-  FlatList,
-  Image
+  Image,
+  FlatList
 } from "react-native";
-import { RefreshState, HttpUtils, system } from "../utils";
+
 import {
   EmptyComponent,
   FooterComponent,
   SectionListItem,
   BannerBar,
   SelectionBar,
-  TopicBar
+  ScrollToTop
 } from "../stateless";
-import { ClassifyBar, SwiperBar, SearchBar, Loading } from "../components";
+import { SwiperBar, SearchBar, Loading } from "../components";
+
+import { RefreshState, system, HttpUtils } from "../utils";
+import PropTypes from "prop-types";
+
+const itemHeight = system.width / 2 + 100;
 
 export default class HomePage extends PureComponent {
-  currentCat = 1;
-  pageNo = 1;
+  pageno = 0;
   constructor(props) {
     super(props);
     this.state = {
+      isShow: false,
       refreshState: RefreshState.Idle,
-      banners: [],
-      products: [],
-      topList: [],
-      sections: [{ key: 0, data: [] }]
+      datas: [],
+      banners: []
     };
+    this.flag = 1;
   }
-  setSectionData(products) {
-    let datas = [];
-    if (
-      this.pageNo >= 2 &&
-      this.state.sections &&
-      this.state.sections.length >= 1
-    ) {
-      datas = this.state.sections[0].data;
-    }
-    this.setState({
-      sections: [{ key: 0, data: datas.concat(products) }]
-    });
-  }
+
   static navigationOptions = ({ navigation }) => {
     const { navigate, state } = navigation;
     return {
@@ -63,52 +54,83 @@ export default class HomePage extends PureComponent {
   };
 
   componentDidMount() {
-    this.refs["loading"].show();
+    this.initDatas();
+    this._loadDatas();
+  }
+
+  initDatas() {
     HttpUtils.get("config/index").then(result => {
-      if (result) {
-        this.setState({
-          banners: result.Banners,
-          topList: result.Top100
-        });
-        this.setSectionData(result.Products);
-      }
-      this.refs["loading"].dismiss();
+      this.setState({
+        banners: result.Banners
+      });
     });
   }
 
+  componentWillUnmount() {
+    this.flag = null;
+  }
+
   /**
-   * 上拉刷新
+   * 加载数据
    */
-  _onRefreshing = () => {
-    this.setState({
-      refreshState: RefreshState.Refreshing
-    });
-    HttpUtils.get("config/index")
-      .then(result => {
-        if (result) {
-          this.setState({
-            refreshState: RefreshState.Idle
-          });
-          this.setSectionData(result.Products);
-        } else {
-          this.setState({
-            refreshState: RefreshState.NoData
-          });
+  _loadDatas = () => {
+    this.flag &&
+      HttpUtils.get("Topic/all", {
+        pageno: this.pageno
+      }).then(res => {
+        if (res && res.Datas) {
+          let refreshState = RefreshState.NoData;
+          const datas = this.pageno === 1 ? [] : this.state.datas;
+          const length = res.Datas.length;
+
+          if (length >= 1 && length < 10) {
+            refreshState = RefreshState.NoMoreData;
+          } else if (length >= 10) {
+            refreshState = RefreshState.Idle;
+          }
+
+          this.flag &&
+            this.setState({
+              datas: datas.concat(res.Datas),
+              refreshState: refreshState
+            });
         }
-        //  this.getLoading().dismiss();
-      })
-      .catch(error => {
-        // this.getLoading().dismiss();
       });
   };
 
   /**
-   * 下拉加载
+   * 下拉刷新
+   */
+  _onRefreshing = () => {
+    const currentState = this.state.refreshState;
+    if (
+      currentState !== RefreshState.Loading &&
+      currentState !== RefreshState.Refreshing
+    ) {
+      this.setState({
+        refreshState: RefreshState.Refreshing
+      });
+      this._loadDatas();
+    }
+  };
+
+  /**
+   * 上拉加载
    */
   _onLoading = () => {
-    this.pageNo += 1;
-    this.loadDatas();
+    const currentState = this.state.refreshState;
+    if (currentState === RefreshState.Idle) {
+      this.setState({
+        refreshState: RefreshState.Loading
+      });
+      this.pageno += 1;
+      this._loadDatas();
+    }
   };
+
+  _renderItem = ({ item }) => (
+    <SectionListItem navigation={this.props.navigation} product={item} />
+  );
 
   /**
    * 头部模块
@@ -128,87 +150,46 @@ export default class HomePage extends PureComponent {
       </View>
     );
   };
-
-  _onChange = cat => {
-    this.currentCat = cat;
-    this.pageNo = 1;
-    this.setState({
-      products: []
-    });
-    this.loadDatas();
-  };
-
-  loadDatas() {
-    this.setState({
-      refreshState:
-        this.pageNo == 1 ? RefreshState.Refreshing : RefreshState.Loading
-    });
-    HttpUtils.get("search/Cats", {
-      cat: this.currentCat,
-      pageno: this.pageNo
-    }).then(resp => {
-      let length = resp.Datas.length;
-      if (length >= 10) {
-        this.setState({
-          refreshState: RefreshState.Idle
-        });
-        this.setSectionData(resp.Datas);
-      } else if (length >= 1 && length < 10) {
-        this.setState({
-          refreshState: RefreshState.NoMoreData
-        });
-        this.setSectionData(resp.Datas);
-      } else {
-        this.setState({
-          refreshState: RefreshState.NoData
-        });
-      }
-    });
-  }
-
-  /**
-   * 项
-   */
-  _renderItem = item => (
-    <SectionListItem navigation={this.props.navigation} product={item.item} />
-  );
-
-  /**
-   * key
-   */
-  _keyExtract = (item, index) => index;
-
   /**
    * getItemLayout是一个可选的优化，用于避免动态测量内容尺寸的开销，不过前提是你可以提前知道内容的高度。如果你的行高是固定的，getItemLayout用起来就既高效又简单
    */
-  _itemLayout = (item, index) => ({
-    //   150为Item高度 同时也要加上分隔符的高度
-    length: 150,
-    offset: 150 * index,
-    index
-  });
-  _renderSection = () => <ClassifyBar onChange={this._onChange} />;
+  _itemLayout = (item, index) => {
+    return {
+      length: itemHeight,
+      offset: itemHeight * index,
+      index
+    };
+  };
+
+  _onScroll = e => {
+    const offsetY = e.nativeEvent.contentOffset.y;
+    this.setState({
+      isShow: offsetY > 100
+    });
+  };
+
+  _scrollToTop = () => {
+    this._flatList.scrollToOffset({ offset: 0, animated: true });
+  };
+
   render() {
     const isRefreshing = this.state.refreshState === RefreshState.Refreshing;
     return (
-      <View>
-        <SectionList
-          sections={this.state.sections}
-          initialNumToRender={5}
+      <View style={styles.container}>
+        <FlatList
+          style={styles.listView}
+          data={this.state.datas}
+          initialNumToRender={10}
           maxToRenderPerBatch={10}
-          renderSectionHeader={this._renderSection}
-          stickySectionHeadersEnabled={true}
-          ListHeaderComponent={this._renderHeader}
-          ListFooterComponent={
-            <FooterComponent
-              reloading={this._onLoading}
-              refreshState={this.state.refreshState}
-            />
-          }
+          onEndReachedThreshold={0.1}
+          ref={flat => (this._flatList = flat)}
+          keyExtractor={(item, index) => index}
           ListEmptyComponent={<EmptyComponent />}
-          renderItem={this._renderItem}
-          keyExtractor={this._keyExtract}
           getItemLayout={this._itemLayout}
+          onEndReached={this._onLoading}
+          renderItem={this._renderItem}
+          onScroll={this._onScroll}
+          ListHeaderComponent={this._renderHeader}
           refreshControl={
             <RefreshControl
               onRefresh={this._onRefreshing}
@@ -216,16 +197,26 @@ export default class HomePage extends PureComponent {
               title={isRefreshing ? "刷新数据中" : "松开立即更新"}
             />
           }
-          onEndReached={this._onLoading}
-          onEndReachedThreshold={0.1}
+          ListFooterComponent={
+            <FooterComponent
+              reloading={this._onLoading}
+              refreshState={this.state.refreshState}
+            />
+          }
         />
-        <Loading ref={"loading"} text={"Loading..."} />
+        <ScrollToTop isShow={this.state.isShow} scrollTo={this._scrollToTop} />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: system.height
+  },
+  listView: {
+    flex: system.height
+  },
   header: {
     backgroundColor: "#f5f5f5",
     height: 40,

@@ -4,46 +4,42 @@ import { RefreshFlatList, Loading, ClassifyBar, SortBar } from "../components";
 import { HttpUtils } from "../utils";
 
 export default class TopicPage extends PureComponent {
-  currentCat = 0;
-  currentSort = 0;
-
+  classify = 1;
+  sort = 0;
   constructor(props) {
     super(props);
     this.state = {
       datas: []
     };
-  }
-  componentDidMount() {
-    // this._flatList.initDatas();
+    const { state, setParams } = this.props.navigation;
+    if (state && state.params) {
+      this.classify = state.params.cat;
+    }
   }
 
   _fetchRequest = pageno => {
-    let sid = this.props.sid;
-    if (this.props.navigation) {
-      const { state } = this.props.navigation;
-      if (state && state.params) {
-        sid = state.params.sid;
-      }
-    }
-    return HttpUtils.get("Topic/Channel", {
-      t: sid,
+    return HttpUtils.get("Classify/List", {
       pageno: pageno,
-      cat: this.currentCat,
-      sort: this.currentSort
+      cat: this.classify,
+      sort: this.sort
     });
   };
   _onCatChange = cat => {
-    this.currentCat = cat.id;
+    this.classify = cat.id;
+    const { setParams } = this.props.navigation;
+    setParams({
+      title: cat.name
+    });
     this._flatList.initDatas();
   };
   _onSortChange = sort => {
-    this.currentSort = sort;
+    this.sort = sort;
     this._flatList.initDatas();
   };
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <ClassifyBar onChange={this._onCatChange} />
+        <ClassifyBar onChange={this._onCatChange} selected={this.classify} />
         <SortBar onChange={this._onSortChange} />
         <RefreshFlatList
           ref={flat => (this._flatList = flat)}

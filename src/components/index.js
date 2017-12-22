@@ -4,6 +4,7 @@ import RefreshFlatList from "./RefreshFlatList";
 import Loading from "./Loading";
 import Describe from "./Describe";
 import SwiperBar from "./SwiperBar";
+import SortBar from "./SortBar";
 
 export {
   ClassifyBar,
@@ -11,5 +12,6 @@ export {
   RefreshFlatList,
   Loading,
   SwiperBar,
-  Describe
+  Describe,
+  SortBar
 };

@@ -2,12 +2,7 @@ import React, { PureComponent } from "react";
 
 import { StyleSheet, View } from "react-native";
 
-import {
-  SearchBar,
-  ClassifyBar,
-  RefreshFlatList,
-  Loading
-} from "../components";
+import { SearchBar, SortBar, RefreshFlatList, Loading } from "../components";
 
 import { FlatListItem } from "../stateless";
 
@@ -97,7 +92,7 @@ export default class SearchPage extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <ClassifyBar data={this.state.categories} onChange={this._onChange} />
+        <SortBar onChange={this._onChange} />
         <RefreshFlatList
           isReload={this.state.isReload}
           numColumns={2}

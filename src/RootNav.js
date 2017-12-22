@@ -8,7 +8,8 @@ import {
   WebPage,
   HomePage,
   TopicPage,
-  ChannelPage
+  ChannelPage,
+  ClassifyListPage
 } from "./page";
 
 import TabNav from "./TabNav";
@@ -24,7 +25,7 @@ const RootNavigator = StackNavigator(
     tab: {
       screen: TabNav
     },
-    channel:{
+    channel: {
       screen: ChannelPage,
       navigationOptions: ({ navigation }) => {
         const { state } = navigation;
@@ -35,6 +36,15 @@ const RootNavigator = StackNavigator(
     },
     topic: {
       screen: TopicPage,
+      navigationOptions: ({ navigation }) => {
+        const { state } = navigation;
+        return {
+          title: state.params.title
+        };
+      }
+    },
+    classifyList: {
+      screen: ClassifyListPage,
       navigationOptions: ({ navigation }) => {
         const { state } = navigation;
         return {

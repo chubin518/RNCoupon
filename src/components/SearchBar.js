@@ -120,7 +120,8 @@ var styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     padding: 0,
-    marginHorizontal: 5
+    marginHorizontal: 5,
+    height: 32
   },
   searchButton: {
     width: 55,
