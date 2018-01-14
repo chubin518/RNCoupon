@@ -2,9 +2,8 @@ import React, { PureComponent } from "react";
 
 import { StyleSheet, View } from "react-native";
 
-import { SearchBar, SortBar, RefreshFlatList, Loading } from "../components";
+import { SearchBar, SortBar, RefreshFlatList, Loading ,FlatListItem} from "../components";
 
-import { FlatListItem } from "../stateless";
 
 import { HttpUtils } from "../utils";
 

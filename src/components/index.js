@@ -5,6 +5,8 @@ import Loading from "./Loading";
 import Describe from "./Describe";
 import SwiperBar from "./SwiperBar";
 import SortBar from "./SortBar";
+import SectionListItem from "./SectionListItem";
+import FlatListItem from "./FlatListItem";
 
 export {
   ClassifyBar,
@@ -13,5 +15,7 @@ export {
   Loading,
   SwiperBar,
   Describe,
-  SortBar
+  SortBar,
+  FlatListItem,
+  SectionListItem
 };

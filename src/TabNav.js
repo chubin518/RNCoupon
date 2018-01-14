@@ -57,7 +57,7 @@ const TabNav = TabNavigator(
         headerLeft: <View />,
         tabBarIcon: ({ tintColor, focused }) => (
           <Image
-            source={require("./images/nav_search.png")}
+            source={require("./images/search_icon.png")}
             style={[styles.icon, { tintColor: tintColor }]}
           />
         )

@@ -10,15 +10,11 @@ import {
   TouchableOpacity
 } from "react-native";
 import extend from "extend";
+import AutoImage from "react-native-scalable-image";
 
 import { Loading, Describe } from "../components";
 import { HttpUtils, system, RNAlibcSdk } from "../utils";
-import {
-  ProductName,
-  ProductShop,
-  FlatListItem,
-  ProductImages
-} from "../stateless";
+import { ProductName, ProductImages } from "../stateless";
 
 export default class DetailPage extends PureComponent {
   flag = null;
@@ -58,44 +54,60 @@ export default class DetailPage extends PureComponent {
     RNAlibcSdk.Show(product.SPYHQTGLJ);
   };
 
+  _renderItem = ({ item }) => {
+    return (
+      <AutoImage
+        width={system.width}
+        style={{
+          margin: 0,
+          padding: 0,
+          resizeMode: "stretch"
+        }}
+        source={{ uri: item }}
+      />
+    );
+  };
+
+  _renderHeader = () => {
+    let product = this.state.product;
+    return (
+      <View>
+        <ProductImages source={product.Images} />
+        <ProductName product={product} />
+        <View
+          style={{
+            borderLeftColor: "#FF0036",
+            borderLeftWidth: 3,
+            borderStyle: "solid",
+            height: 45,
+            padding: 3,
+            justifyContent: "center",
+            backgroundColor: "#FFFFFF",
+            marginTop: 5
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 18,
+              paddingLeft: 10
+            }}
+          >
+            商品图片
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
   render() {
     let product = this.state.product;
     return (
       <View style={styles.container}>
         <FlatList
-          numColumns={2}
-          ListHeaderComponent={() => {
-            return (
-              <View>
-                <ProductImages source={product.Images} />
-                <ProductName product={product} />
-                <ProductShop product={product} />
-                <Describe source={product.Details} />
-                <View style={{ marginTop: 5 }}>
-                  <Text
-                    style={{
-                      height: 40,
-                      backgroundColor: "#fff",
-                      textAlign: "center",
-                      textAlignVertical: "center",
-                      borderColor: "#eeeff1",
-                      borderWidth: 1
-                    }}
-                  >
-                    相似推荐
-                  </Text>
-                </View>
-              </View>
-            );
-          }}
+          ListHeaderComponent={this._renderHeader}
           keyExtractor={(item, index) => index}
-          data={product.Recommends}
-          renderItem={item => (
-            <FlatListItem
-              product={item.item}
-              navigation={this.props.navigation}
-            />
-          )}
+          data={product.Details}
+          renderItem={this._renderItem}
         />
         <TouchableOpacity
           style={{
@@ -103,7 +115,6 @@ export default class DetailPage extends PureComponent {
             backgroundColor: "#fff",
             justifyContent: "space-between",
             alignItems: "center",
-            borderWidth: 1,
             flexDirection: "row"
           }}
           activeOpacity={1}

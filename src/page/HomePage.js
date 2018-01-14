@@ -12,17 +12,16 @@ import {
 import {
   EmptyComponent,
   FooterComponent,
-  SectionListItem,
   BannerBar,
   SelectionBar,
   ScrollToTop
 } from "../stateless";
-import { SwiperBar, SearchBar, Loading } from "../components";
+import { SwiperBar, SearchBar, SectionListItem, Loading } from "../components";
 
 import { RefreshState, system, HttpUtils } from "../utils";
 import PropTypes from "prop-types";
 
-const itemHeight = system.width / 2 + 100;
+const itemHeight = 50;
 
 export default class HomePage extends PureComponent {
   pageno = 0;
@@ -80,12 +79,12 @@ export default class HomePage extends PureComponent {
       }).then(res => {
         if (res && res.Datas) {
           let refreshState = RefreshState.NoData;
-          const datas = this.pageno === 1 ? [] : this.state.datas;
+          const datas = this.pageno <= 1 ? [] : this.state.datas;
           const length = res.Datas.length;
 
-          if (length >= 1 && length < 10) {
+          if (length >= 1 && length < 5) {
             refreshState = RefreshState.NoMoreData;
-          } else if (length >= 10) {
+          } else if (length >= 5) {
             refreshState = RefreshState.Idle;
           }
 
@@ -219,7 +218,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#f5f5f5",
-    height: 40,
+    height: 45,
     justifyContent: "center",
     alignItems: "center"
   },

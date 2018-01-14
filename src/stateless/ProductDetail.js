@@ -36,7 +36,7 @@ const ProductName = ({ product }) => {
           <Text style={styles.couponTitle}>券</Text>
           <Text style={styles.couponInfo}>{product.CP}</Text>
         </View>
-        <Text>月消{product.SPYXL}件</Text>
+        <Text>已售{product.SPYXL}件</Text>
       </View>
     </View>
   );
@@ -128,12 +128,9 @@ const styles = StyleSheet.create({
   },
   name: {
     width: "100%",
-    height: 50,
     textAlignVertical: "center",
     flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "#eeeff1",
-    paddingBottom: 10
+    paddingBottom: 5
   },
   price: {
     flexDirection: "row",

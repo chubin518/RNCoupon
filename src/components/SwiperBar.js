@@ -5,6 +5,8 @@ import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import Swiper from "react-native-swiper";
 import PropTypes from "prop-types";
 
+import { system } from "../utils";
+
 class SwiperBar extends PureComponent {
   constructor(props) {
     super(props);
@@ -56,8 +58,8 @@ class SwiperBar extends PureComponent {
 
 const styles = StyleSheet.create({
   swiper: {
-    width: "100%",
-    height: 150,
+    width: system.width,
+    height: 180,
     padding: 0,
     margin: 0,
     backgroundColor: "#fff"
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
   },
   swiperImage: {
     flex: 1,
-    width: "100%",
+    width: system.width,
     resizeMode: "stretch"
   }
 });

@@ -11,6 +11,8 @@ import {
   ScrollView
 } from "react-native";
 
+import { system } from "../utils";
+
 export default class ClassifyPage extends PureComponent {
   constructor(props) {
     super(props);
@@ -26,7 +28,6 @@ export default class ClassifyPage extends PureComponent {
   };
 
   _onSubmit = () => {
-    console.log(this.state.keyword);
     let { navigate } = this.props.navigation;
     navigate("result", {
       keyworld: this.state.keyword
@@ -84,6 +85,10 @@ export default class ClassifyPage extends PureComponent {
             </Text>
           </View>
         </View>
+        <Image
+          source={require("../images/search/jiaocheng.png")}
+          style={{ width: system.width,resizeMode:'stretch' }}
+        />
       </ScrollView>
     );
   }
@@ -99,7 +104,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   bg: {
-    width: "100%",
+    width: system.width,
     height: 120,
     position: "absolute",
     top: 0,
@@ -115,7 +120,7 @@ const styles = StyleSheet.create({
   },
   searchBox: {
     height: 45,
-    width: "90%",
+    width: system.width * 0.9,
     flexDirection: "row",
     borderRadius: 5,
     alignItems: "center",
@@ -137,7 +142,7 @@ const styles = StyleSheet.create({
     width: 70,
     alignItems: "center",
     justifyContent: "center",
-    height: "100%",
+    height: 45,
     backgroundColor: "#ffb300",
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5

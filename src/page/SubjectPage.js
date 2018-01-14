@@ -8,7 +8,7 @@ import {
   Loading
 } from "../components";
 
-import { FlatListItem } from "../stateless";
+import { FlatListItem } from "../components";
 
 import { HttpUtils } from "../utils";
 

@@ -1,19 +1,10 @@
 import React, { PureComponent } from "react";
 
-import {
-  StyleSheet,
-  Text,
-  View,
-  RefreshControl,
-  FlatList
-} from "react-native";
+import { StyleSheet, Text, View, RefreshControl, FlatList } from "react-native";
 
-import {
-  EmptyComponent,
-  FooterComponent,
-  FlatListItem,
-  ScrollToTop
-} from "../stateless";
+import { EmptyComponent, FooterComponent, ScrollToTop } from "../stateless";
+
+import { FlatListItem } from "../components";
 
 import { RefreshState, system } from "../utils";
 import PropTypes from "prop-types";

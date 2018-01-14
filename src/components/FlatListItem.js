@@ -1,10 +1,15 @@
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { system } from "../utils";
 import PropTypes from "prop-types";
+import { is, Map } from "immutable";
 
-const FlatListItem = ({ product, navigation }) => {
-  const onRedirect = () => {
+class FlatListItem extends Component {
+  constructor(props) {
+    super(props);
+  }
+  _onRedirect = () => {
+    const { product, navigation } = this.props;
     navigation.navigate &&
       navigation.navigate("detail", {
         itemId: product.SPID,
@@ -12,31 +17,37 @@ const FlatListItem = ({ product, navigation }) => {
         intro: product
       });
   };
-  return (
-    <TouchableOpacity
-      onPress={onRedirect}
-      activeOpacity={1}
-      style={styles.productItem}
-    >
-      <Image style={styles.image} source={{ uri: product.SPZT }} />
-      <View style={styles.intro}>
-        <Text style={styles.title} numberOfLines={2}>
-          {product.SPMC}
-        </Text>
-        <View style={styles.coupon}>
-          <Text style={styles.couponTitle}>券</Text>
-          <Text style={styles.couponInfo}>￥{product.CP}</Text>
-          <Text style={styles.saleTotal}>月消{product.SPYXL}件</Text>
+  shouldComponentUpdate(nextProps, nextState) {
+    return !is(Map(this.props.product), Map(nextProps.product));
+  }
+  render() {
+    const { product, navigation } = this.props;
+    return (
+      <TouchableOpacity
+        onPress={this._onRedirect}
+        activeOpacity={1}
+        style={styles.productItem}
+      >
+        <Image style={styles.image} source={{ uri: product.SPZT }} />
+        <View style={styles.intro}>
+          <Text style={styles.title} numberOfLines={2}>
+            {product.SPMC}
+          </Text>
+          <View style={styles.coupon}>
+            <Text style={styles.couponTitle}>券</Text>
+            <Text style={styles.couponInfo}>￥{product.CP}</Text>
+            <Text style={styles.saleTotal}>已售{product.SPYXL}件</Text>
+          </View>
+          <View style={styles.price}>
+            <Text>券后价</Text>
+            <Text style={styles.cprice}>￥{product.FP}</Text>
+            <Text style={styles.rprice}>￥{product.SPJG}</Text>
+          </View>
         </View>
-        <View style={styles.price}>
-          <Text>券后价</Text>
-          <Text style={styles.cprice}>￥{product.FP}</Text>
-          <Text style={styles.rprice}>￥{product.SPJG}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
+      </TouchableOpacity>
+    );
+  }
+}
 
 FlatListItem.propTypes = {
   product: PropTypes.object.isRequired,
