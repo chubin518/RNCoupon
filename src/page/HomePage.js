@@ -90,7 +90,7 @@ export default class HomePage extends PureComponent {
 
           this.flag &&
             this.setState({
-              datas: datas.concat(res.Datas),
+              datas: [...datas, ...res.Datas],
               refreshState: refreshState
             });
         }

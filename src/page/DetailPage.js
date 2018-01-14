@@ -35,7 +35,7 @@ export default class DetailPage extends PureComponent {
   componentDidMount() {
     const { navigate, state } = this.props.navigation;
     this.flag && this.loading.show();
-    HttpUtils.get("detail/getdetail", {
+    HttpUtils.get("detail/get", {
       id: state.params.itemId
     }).then(response => {
       let product = {};
@@ -123,7 +123,9 @@ export default class DetailPage extends PureComponent {
           <Text style={{ marginLeft: 5, flex: 1 }}>
             券后价：
             <Text style={{ color: "#fc3616" }}>￥</Text>
-            <Text style={[styles.salePrice, { fontSize: 24 }]}>
+            <Text
+              style={[styles.salePrice, { fontSize: 24, color: "#fc3616" }]}
+            >
               {product.FP}
             </Text>
           </Text>

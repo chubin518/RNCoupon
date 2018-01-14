@@ -8,7 +8,8 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
-  ScrollView
+  ScrollView,
+  ImageBackground
 } from "react-native";
 
 import { system } from "../utils";
@@ -51,11 +52,10 @@ export default class ClassifyPage extends PureComponent {
     }
     return (
       <ScrollView style={styles.container}>
-        <View style={styles.header}>
-          <Image
-            style={styles.bg}
-            source={require("../images/search/bg.png")}
-          />
+        <ImageBackground
+          style={styles.bg}
+          source={require("../images/search/bg.png")}
+        >
           <View style={styles.info}>
             <View style={styles.searchBox}>
               <Image
@@ -84,10 +84,10 @@ export default class ClassifyPage extends PureComponent {
               百万张淘宝优惠券等你搜
             </Text>
           </View>
-        </View>
+        </ImageBackground>
         <Image
           source={require("../images/search/jiaocheng.png")}
-          style={{ width: system.width,resizeMode:'stretch' }}
+          style={{ width: system.width, resizeMode: "stretch" }}
         />
       </ScrollView>
     );
@@ -98,19 +98,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF"
   },
-  header: {
-    height: 120,
-    alignItems: "center",
-    justifyContent: "center"
-  },
+
   bg: {
     width: system.width,
     height: 120,
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
     justifyContent: "center",
     alignItems: "center"
   },
